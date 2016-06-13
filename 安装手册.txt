@@ -1,0 +1,46 @@
+
+                         远程教育平台环境配置
+
+1: 下载winzip并安装。
+2: 安装mysql并导入数据库,操作如下。
+     2.1 安装mysql后双击mysql\bin\winmysqladmin.exe文件，设定mysql用户和密码，如用户名admin,密码admin
+     2.2 键入如下dos命令：
+       mysql  //进入mysql命令行
+       grant all privileges on *.* to admin@localhost identified by 'admin' //给admin赋权限，其中localhost用ip地址也可
+       create database elearning; //创建数据库
+       use elearning;  //指定使用哪个数据库
+       source elearningstd.sql  //导入数据库
+       create database bbs;
+       use bbs;
+       \. bbs.sql
+       quit  //退出mysql命令行
+3: 安装myodbc-2.50.39-nt
+4: 安装jdk
+5: 将tomcat复制到硬盘上，不需安装。
+     进入“控制面板-系统-高级-环境变量”
+     在系统变量中新建JAVA_HOME变量，VALUE为C:\JDK1.3
+     在系统变量中修改path,添加“;%JAVA_HOME%\BIN”
+     点击tomcat\bin\startup,测试是否启动成功，若成功会显示端口号
+6: 安装apache
+     在添加服务器名时，选择第二项，即不启动apache server
+     Windows环境中配置Apache + Tomcat.JSP
+     将ApacheModuleJServ.dll拷到Apache所在目录的modules子目录中； 
+     打开apache\conf的httpd文件,在最后加入一行"include c:/tomcat/conf/tomcat-apache.conf"
+     启动与测试：  
+     启动apache，此时如果正确，应当显示为：  
+     Apache/1.3.9 (Win32) tomcat/1.0 running...  
+7.将elearning复制到硬盘上.
+     修改tomcat/conf/server.xml中<context>与elearning有关的部分，指定elearning的路径。
+     修改elearning/client/web-inf/classes/elearning.properties文件，将DBUSER,DBPWD等设为指定的用户名和密码，如admin, admin。并指定photopath,path为相应目录。
+     重新启动tomcat和apache.
+     在ie中进入http://localhost/elearning/Login.jsp测试成功与否.
+     用username: admin password:111111 进行登陆。
+8.real server, producer plus, conference server,桌面直播的安装见相应产品的安装手册。
+9.直播组织及资源管理器的配置见管理员操作手册。
+10.视频交互的组织见conference server操作手册。
+
+注: 如果tomcat不是安装在默认的路径: c:\tomcat, 则需要对上传的路径作修改,具体如下:
+    在bbs\managepost.jsp页面下,修改
+<jsp:setProperty name="upBean" property="folderstore" value="c:/tomcat/webapps/bbs/image" />
+    为TOMCAT所在的具体路径.
+bbs的分类中：课程分类要保证它在数据库中的id为6。
